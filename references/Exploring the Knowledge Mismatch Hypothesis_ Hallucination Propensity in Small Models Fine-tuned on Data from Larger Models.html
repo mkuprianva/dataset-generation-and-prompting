@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)https://arxiv.org/html/2411.00878v1 -->
+<html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models</title>
+<!--Generated on Thu Oct 31 13:01:22 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<link href="./Exploring the Knowledge Mismatch Hypothesis_ Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models_files/boot.css" rel="stylesheet" type="text/css">
+<link href="./Exploring the Knowledge Mismatch Hypothesis_ Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models_files/ar5i.css" rel="stylesheet" type="text/css">
+<link href="https://arxiv.org/static/browse/0.3.4/css/ar5iv-fonts.0.7.9.min.css" rel="stylesheet" type="text/css">
+<link href="./Exploring the Knowledge Mismatch Hypothesis_ Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models_files/late.css" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
+<script src="https://arxiv.org/static/browse/0.3.4/js/addons_new.js"></script>
+<script src="https://arxiv.org/static/browse/0.3.4/js/feedbackOverlay.js"></script>
+<meta content="
+large language models,  fine-tuning,  hallucination,  evaluation
+" lang="en" name="keywords">
+<!--<base href="/html/2411.00878v1/">--><base href="."><link rel="stylesheet" href="./Exploring the Knowledge Mismatch Hypothesis_ Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models_files/utz6.css"><link rel="icon" type="image/png" href="https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-16x16.png" sizes="16x16"><link rel="icon" type="image/png" href="https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png" sizes="32x32"></head>
+<body><header class="mob_header">
+    <div class="html-header-logo">
+      <a href="https://arxiv.org/">
+        <img alt="logo" class="logomark" role="presentation" width="100" src="./Exploring the Knowledge Mismatch Hypothesis_ Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models_files/arxi.svg">
+        <span class="sr-only">Back to arXiv</span>
+      </a>
+    </div>
+
+    <!--TOC, dark mode, links-->
+    <div class="html-header-nav">
+      <!--back to abstract-->
+      
+        <a class="nav-link ar5iv-footer-button hover-effect" aria-label="Back to abstract page" href="https://arxiv.org/abs/2411.00878v1">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1.25em" viewBox="0 0 512 512" fill="#ffffff" aria-hidden="true">
+            <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"></path>
+        </svg>
+        </a>
+      <!--dark mode-->
+      <a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle dark/light mode" aria-label="System preference">
+        <label id="automatic-tog" class="toggle-icon" title="Switch to light mode" for="__palette_3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"></path></svg>
+        </label>
+        <label id="light-tog" class="toggle-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+        <label id="dark-tog" class="toggle-icon" title="Switch to system preference" for="__palette_2" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+      </a>
+      <!--nav-->
+      <button class="navbar-toggler ar5iv-footer-button" type="button" data-bs-theme="dark" data-bs-toggle="collapse" aria-expanded="false" data-bs-target=".ltx_page_main &gt;.ltx_TOC.mobile" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" style="border:none; margin-right: 0em;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1.25em" viewBox="0 0 448 512" aria-hidden="true" role="img" fill="#ffffff"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg>
+      </button>
+    </div>
+    </header><header class="desktop_header">
+    <div class="html-header-logo">
+      <a href="https://arxiv.org/">
+          <img alt="logo" class="logo" role="presentation" width="100" src="https://services.dev.arxiv.org/html/static/arxiv-logo-one-color-white.svg">
+          <span class="sr-only">Back to arXiv</span>
+      </a>
+    </div>
+    <div class="html-header-message" role="banner">
+        <p>This is <strong>experimental HTML</strong> to improve accessibility. We invite you to report rendering errors. <span class="sr-only">Use Alt+Y to toggle on accessible reporting links and Alt+Shift+Y to toggle off.</span> Learn more <a href="https://info.arxiv.org/about/accessible_HTML.html" target="_blank">about this project</a> and <a href="https://info.arxiv.org/help/submit_latex_best_practices.html" target="_blank">help improve conversions</a>.
+        </p>
+    </div>
+    <nav class="html-header-nav">
+      <a class="ar5iv-footer-button hover-effect" href="https://info.arxiv.org/about/accessible_HTML.html" target="_blank">Why HTML?</a>
+      <a class="ar5iv-footer-button hover-effect" target="_blank" href="https://arxiv.org/html/2411.00878v1/#myForm" onclick="event.preventDefault(); var modal = document.getElementById(&#39;myForm&#39;); modal.style.display = &#39;block&#39;; bugReportState.setInitiateWay(&#39;Header&#39;);">Report Issue</a>
+      <a class="ar5iv-footer-button hover-effect" href="https://arxiv.org/abs/2411.00878v1">Back to Abstract</a>
+      <a class="ar5iv-footer-button hover-effect" href="https://arxiv.org/pdf/2411.00878v1" target="_blank">Download PDF</a>
+      <a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle dark/light mode">
+        <label id="automatic-tog" class="toggle-icon" title="Switch to light mode" for="__palette_3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"></path></svg>
+        </label>
+        <label id="light-tog" class="toggle-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+        <label id="dark-tog" class="toggle-icon" title="Switch to system preference" for="__palette_2" hidden="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+        </label>
+      </a>
+    </nav></header>
+
+<div class="ltx_page_main" id="main">
+<nav class="ltx_TOC active" aria-labelledby="toc_header"><h2 id="toc_header" class="sr-only">Table of Contents</h2>
+
+      <div id="listIcon" type="button" class="hide">
+          <svg width="17px" height="17px" viewBox="0 0 512 512" style="pointer-events: none;">
+          <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"></path>
+          </svg>
+      </div>
+      <div id="arrowIcon" type="button">
+          <svg width="17px" height="17px" viewBox="0 0 448 512" style="pointer-events: none;">
+          <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path>
+          </svg>
+      </div><ol class="ltx_toclist"><li class="ltx_tocentry ltx_tocentry_section">
+    <a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#abstract" title="Abstract">
+      <span class="ltx_text ltx_ref_title">
+        <span class="ltx_tag ltx_tag_ref"></span>
+        Abstract
+      </span>
+    </a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S1" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">I </span><span class="ltx_text ltx_font_smallcaps">Introduction</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S2" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">II </span><span class="ltx_text ltx_font_smallcaps">Origins of Hallucination</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S3" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">III </span><span class="ltx_text ltx_font_smallcaps">Knowledge Mismatch Hypothesis</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">IV </span><span class="ltx_text ltx_font_smallcaps">Testing the Hypothesis</span></span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection">
+<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS1" title="In IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-A</span> </span><span class="ltx_text ltx_font_italic">Experimental Setup</span></span></a>
+<ol class="ltx_toclist ltx_toclist_subsection">
+<li class="ltx_tocentry ltx_tocentry_paragraph"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS1.SSS0.Px1" title="In IV-A Experimental Setup ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title">Models</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_paragraph"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS1.SSS0.Px2" title="In IV-A Experimental Setup ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title">Data</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_paragraph"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS1.SSS0.Px3" title="In IV-A Experimental Setup ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title">Fine-tuning</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_paragraph"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS1.SSS0.Px4" title="In IV-A Experimental Setup ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title">Evaluation</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.SS2" title="In IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-B</span> </span><span class="ltx_text ltx_font_italic">Results</span></span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S5" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">V </span><span class="ltx_text ltx_font_smallcaps">The Effects of Fine-tuning on Data Obtained from a Larger Model</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S6" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">VI </span><span class="ltx_text ltx_font_smallcaps">Limitations</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S7" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">VII </span><span class="ltx_text ltx_font_smallcaps">Related Work</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S8" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">VIII </span><span class="ltx_text ltx_font_smallcaps">Conclusions</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S9" title="In Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">IX </span><span class="ltx_text ltx_font_smallcaps">Acknowledgments</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+    <a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib" title="References">
+      <span class="ltx_text ltx_ref_title">
+        <span class="ltx_tag ltx_tag_ref"></span>
+        References
+      </span>
+    </a></li></ol></nav>
+
+<div class="ltx_page_content"><div id="target-section" class="section"><a id="license-tr" href="https://info.arxiv.org/help/license/index.html#licenses-available">License: CC BY 4.0</a><div id="watermark-tr">arXiv:2411.00878v1 [cs.CL] 31 Oct 2024</div></div>
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Exploring the Knowledge Mismatch Hypothesis: 
+<br class="ltx_break">Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models
+<br class="ltx_break">
+</h1><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname"> Phil Wee
+</span><span class="ltx_author_notes">
+<span class="ltx_contact ltx_role_affiliation"><span class="ltx_text ltx_font_italic" id="id1.1.id1">Computer Science</span>
+<br class="ltx_break"><span class="ltx_text ltx_font_italic" id="id2.2.id2">NYU
+<br class="ltx_break"></span>Abu Dhabi, UAE 
+<br class="ltx_break">philwee@nyu.edu
+</span></span></span>
+<span class="ltx_author_before">  </span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Riyadh Baghdadi
+</span><span class="ltx_author_notes">
+<span class="ltx_contact ltx_role_affiliation"><span class="ltx_text ltx_font_italic" id="id3.1.id1">Computer Science</span>
+<br class="ltx_break"><span class="ltx_text ltx_font_italic" id="id4.2.id2">NYU
+<br class="ltx_break"></span>Abu Dhabi, UAE 
+<br class="ltx_break">baghdadi@nyu.edu
+</span></span></span>
+</div><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_abstract" id="abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<p class="ltx_p" id="id5.id1">Recently, there has been an explosion of large language models created through fine-tuning with data from larger models. These small models able to produce outputs that appear qualitatively similar to significantly larger models. However, one of the key limitations that have been observed with these models is their propensity to hallucinate significantly more often than larger models. In particular, they have been observed to generate coherent outputs that involve factually incorrect information and spread misinformation, toxicity, and stereotypes. There are many potential causes of hallucination, of which, one hypothesis is that fine-tuning a model on data produced by a larger model leads to a knowledge mismatch which contributes to hallucination. In particular, it is hypothesized that there is a mismatch between the knowledge that is fed to the model to fine-tune it and the knowledge that is already present in the graph. Fine-tuning the model on data that has such mismatch could contribute to an increased propensity to hallucinate. We show that on an unseen test set, a smaller model fine-tuned on data generated from a larger model produced more wrong answers when compared to models fine-tuned on data created by the small model, which confirms the hypothesis.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_keywords">
+<h6 class="ltx_title ltx_title_keywords">Index Terms: </h6><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+large language models, fine-tuning, hallucination, evaluation
+
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">I </span><span class="ltx_text ltx_font_smallcaps" id="S1.1.1">Introduction</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">A well-known limitation of large language models is their ability to hallucinate or generate factually incorrect statements &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib16" title="">16</a>]</cite>. While large language models are often able to appear fluent, the responses generated by these systems have been observed to often produce statements that are misleading, factually incorrect and harmful. In the context of dialogue-based systems, it has been observed that models often produce responses that are not supported by the evidence available to the system &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib19" title="">19</a>]</cite>. In the context of generative question and answering systems, models have been observed to provide factually incorrect responses &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib18" title="">18</a>]</cite>. This is a key issue in the field of Large Language Models because of the potential harm that hallucination can pose to users. For instance, in medical applications, a medical summary generated from patient information could pose a risk to the patient if the generated outputs involve hallucination. In this case, a factually false recommendation generated by the model can lead to a life-threatening incident for the patient.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">In recent times, this is even more concerning because of the rise of strong large language models that are often able to produce coherent and semantically convincing responses while at the same time, involving hallucination in their outputs. It has become increasingly difficult to tell the difference between the outputs of a model and text written by humans, especially in more general and generic topics and in prompts with short responses. This furthers the risk of hallucination in the outputs of models - the high level of coherence in the outputs of many recent models can easily fool many humans and even many experts.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">A key development in the field of open source models is the explosion of large language models created through fine-tuning with data from larger models. <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib10" title="">10</a>]</cite> <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib3" title="">3</a>]</cite> &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib9" title="">9</a>]</cite> &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib12" title="">12</a>]</cite> &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib11" title="">11</a>]</cite> Most of these fine-tuned models are not only relatively small and easy to reproduce but are also relatively performant and are able to produce outputs that appear qualitatively similar to significantly larger models. However, one key limitation that many of these models share is their propensity to hallucinate significantly more often than larger models. While there has been a lot of previous work in addressing hallucination through further tuning via techniques such as Reinforcement Learning through Human Feedback (RLHF) &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib14" title="">14</a>]</cite> &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib15" title="">15</a>]</cite> and Reinforcement Learning through AI Feedback (RLAI) &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib13" title="">13</a>]</cite>, there has been relatively little work in analyzing the role of underlying training techniques such as fine-tuning.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S1.p4">
+<p class="ltx_p" id="S1.p4.1">Hallucination has a lot of possible reasons, both with respect to data and the model. Our goal in this paper is to study one of the possible reasons: fine-tuning data. In particular, we want to verify the hypothesis that fine-tuning a model on data produced by a larger model leads to a knowledge mismatch, which may contribute to hallucination. Our analysis finds that on an unseen test set, a smaller model fine-tuned on data generated from a larger model produced more wrong answers when compared to models fine-tuned on data created by the small model, which confirms the hypothesis. Our findings question the overall effectiveness of current fine-tuning practices, given the potential for a knowledge mismatch that such fine-tuning may cause and its implications on model hallucination.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">II </span><span class="ltx_text ltx_font_smallcaps" id="S2.1.1">Origins of Hallucination</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">Hallucination is observed to have many potential origins and is observed to be rooted in both data and models &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib16" title="">16</a>]</cite> &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib18" title="">18</a>]</cite>. With respect to data, factually inaccurate data is known to be a key driver of hallucination - if the answer that the model was trained on was wrong, it is likely going to produce a wrong answer. However, even if the training data is factually accurate, hallucination can also still occur as there is simply no way to fully cover every single possible question in the training data. As a result, for questions that it has not seen, models are forced to generalize responses without being able to verify where it is accurate, relevant, or appropriate, which also contributes to hallucination. This issue also applies to other forms of problematic data, such as stereotypical data and biased data - due to the scale of the data used in the training of foundational models, it is impossible to fully or even significantly filter through and clean the training data. As a result, these issues rooted in problematic training data is likely to be present in many foundational models, which most fine-tuned model are based on and inherit from.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p2">
+<p class="ltx_p" id="S2.p2.1">Another key reason source of hallucination is the prescence of duplicates in the training data &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib22" title="">22</a>]</cite>, for which it is common for many training corpora to contain near-duplicate examples and long repetitive substrings. Not only does this lead to wasted compute resources in training, but it is observed to the model memorizing the common snippets. This can contribute to hallucination as the increased propensity to output memorized snippets may lead to the model generating them even in situations where it is not appropriate or factual to do so.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p3">
+<p class="ltx_p" id="S2.p3.1">Furthermore, Ji et al.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib18" title="">18</a>]</cite> note that large language models exhibit Innate Divergence. This is because by nature, some natural language generation (NLG) tasks do not always have factual knowledge alignment between the source input text and the target reference, especially in situations that value diversity in the generated output. For instance, it may be acceptable for open-domain dialogue systems to respond in a subjective style, as this can make generated dialogues more engaging and diverse. However, it has been observed that such dataset characteristics can lead to hallucinations. Such divergence can also lead to issues in the other direction, that is, the training data may contain pieces of information that are relatively informal and subjective, which a model may use in data generation even when prompted with a question that requires a factual answer.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p4">
+<p class="ltx_p" id="S2.p4.1">With respect to models, Ji et al.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib18" title="">18</a>]</cite> point out that the training and inference of models are known to contribute to hallucination through a variety of factors, including Imperfect Representation Learning, Erroneous Decoding, Exposure Bias and Parametric Knowledge Bias.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p5">
+<p class="ltx_p" id="S2.p5.1">Imperfect Representation Learning occurs when an encoder is unable to map inputs to the appropriate internal embeddings, which could influence the degree of hallucination. This is because the encoder has the key role of encoding input text into meaningful representations, and when encoders learn wrong correlations between different parts of the training data, it could produce an erroneous generation that diverges from the input, which contributes to hallucination.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p6">
+<p class="ltx_p" id="S2.p6.1">Erroneous Decoding occurs when decoders focus on the wrong part of the encoded input source, leading to erroneous generation. It occurs also when decoders are designed in a way that improves the generation diversity, such as with changing top-p sampling, which is observed to be positively correlated with increased hallucination.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p7">
+<p class="ltx_p" id="S2.p7.1">Exposure Bias occurs because of the discrepancy in decoding between training and inference time, which can also contribute to hallucination. This is rooted in the common practice of training decoders with teacher-forced MLE training, where the decoder is encouraged to predict the next token conditioned on the ground-truth prefix sequences. However, during the inference generation, the model generates the next token conditioned on the historical sequences previously generated by itself, which can contribute to hallucination through erroneous generation.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S2.p8">
+<p class="ltx_p" id="S2.p8.1">Parametric Knowledge Bias occurs because re-training of models on a large amount of data is known to result in the model memorizing knowledge in its parameters. While this is found to improve the performance in downstream tasks, it is also observed to contribute to hallucination, as models may prioritize parametric knowledge over the provided input. This also applies in generative question and answering, because if the phrasing of a question is too different from that of how knowledge was stored in the model, the intended answer may not be generated. Moreover, if the phrasing of a question is closer to that of another question that a model is more confident about, it may be the case that the model provides the answer for the other question and not the intended one, which can cause increased incorrect responses.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">III </span><span class="ltx_text ltx_font_smallcaps" id="S3.1.1">Knowledge Mismatch Hypothesis</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S3.p1">
+<p class="ltx_p" id="S3.p1.1">The <span class="ltx_text ltx_font_bold" id="S3.p1.1.1">hypothesis</span> examined in this paper is that <em class="ltx_emph ltx_font_italic" id="S3.p1.1.2">there could be a mismatch between the knowledge that is fed to the model to fine-tune it and the knowledge that is already present in the graph, which could contribute to hallucination</em>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S3.p2">
+<p class="ltx_p" id="S3.p2.1">At a small scale, through fine-tuning, the model learns a simple function that extracts knowledge from the model and outputs token predictions. For instance, fine-tuning a model with multiple prompts similar to the following prompt: ”Q: Who is the leader of the United States? A: Joe Biden”, which has already been learned by the model during training, would eventually lead the model to learn a function that predicts the right answer.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S3.p3">
+<p class="ltx_p" id="S3.p3.1">However, if we attempt to fine-tune the model on correct answers that have not been learned by the model, for instance, if the person creating fine-tuning instruction data knows about where Joe Biden was formerly a senator but the model does not, a kind of mismatch occurs. In this case, instead of training the model to output correct answers, this mismatch trains the model to guess answers for questions similar to the one that was newly introduced, because even if the question is not previously known, the fine-tuning teaches it to reply with a particular answer to such a question (instead of ”I don’t know”). In training the model to provide a response for something it did not learn before, it is hypothesized that the model is taught that a correct answer could be a piece of information that it did not learn before, and thus, it is taught to guess.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S3.p4">
+<p class="ltx_p" id="S3.p4.1">Furthermore, if the person creating fine-tuning instruction data does not know the president who succeeded Joe Biden, they will write the following prompt: ”Q: Who succeeded Joe Biden? A: I don’t know”. In this case, they are fine-tuning the model to answer ”I don’t know” whereas the information is already known by the model. This leads to a mismatch. In this case, this mismatch trains the model to withhold information.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S3.p5">
+<p class="ltx_p" id="S3.p5.1">It is hypothesized that a mismatch occurs when there is a difference between the knowledge fed to the model to fine-tune it and the knowledge that is already present in the model. This mismatch either teaches the model to hallucinate or to withhold information.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">IV </span><span class="ltx_text ltx_font_smallcaps" id="S4.1.1">Testing the Hypothesis</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">To test the hypothesis, we take two language models of different sizes, a small model and a large model, we fine-tune the small model with data generated using the large model (we will explain later how such data is generated). Since the large model has more knowledge compared to the small model, the data generated by the larger model is more likely to mismatch with the knowledge of the small model. We then measure the effect of this mismatch on the amount of hallucination in the small model. If the hypothesis is correct, then the small model will hallucinate more, since it was trained with data that has a mismatch with its knowledge.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S4.p2">
+<p class="ltx_p" id="S4.p2.1">More precisely, we take two models of different sizes, a small model and a large model, and fine-tune each model to abstain when it doesn’t know the answer (i.e., answer ”I don’t know”). This is done by taking a dataset of questions and generating responses to its questions via prompted completions to create a fine-tuning dataset for the small and large models. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S4.p3">
+<p class="ltx_p" id="S4.p3.1">For example, for the question ”Where was horse racing’s Breeders’ Cup held in 1988?”:</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<ol class="ltx_enumerate" id="S4.I1">
+<li class="ltx_item" id="S4.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span>
+<div class="ltx_para" id="S4.I1.i1.p1">
+<p class="ltx_p" id="S4.I1.i1.p1.1">The model is first made to complete the prompt ”Question: Where was horse racing’s Breeders’ Cup held in 1988? Answer:”</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span>
+<div class="ltx_para" id="S4.I1.i2.p1">
+<p class="ltx_p" id="S4.I1.i2.p1.1">Then, the generated response is compared with the list of correct answers provided by the dataset (a list of correct answers might be Churchill Downs, Louisville, Kentucky).</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span>
+<div class="ltx_para" id="S4.I1.i3.p1">
+<p class="ltx_p" id="S4.I1.i3.p1.1">If the generated response contains at least one correct answer, for instance, Churchill Downs, then it is marked as correct and the correct answer saved for the fine-tune response of the question. If it does not contain any correct answer, for instance, California, then it is marked as wrong and ”I don’t know” is saved as the fine-tune response of the question.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">4.</span>
+<div class="ltx_para" id="S4.I1.i4.p1">
+<p class="ltx_p" id="S4.I1.i4.p1.1">The fine-tuning dataset is then created by using the questions and fine-tune response, which contains either correct answers or ”I don’t know”. In doing this, the model is trained to abstain when it does not know the answer.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</li>
+</ol>
+</div>
+<div class="ltx_para" id="S4.p4">
+<p class="ltx_p" id="S4.p4.1">We then take the fine-tuning dataset created by the small model and the large model and use it to fine-tune the small model. Our hypothesis would suggest that the small model fine-tuned on the fine-tuning dataset generated by the large model will produce wrong answers more often.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS1.5.1.1">IV-A</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS1.6.2">Experimental Setup</span>
+</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<section class="ltx_paragraph" id="S4.SS1.SSS0.Px1">
+<h4 class="ltx_title ltx_title_paragraph">Models</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS1.SSS0.Px1.p1">
+<p class="ltx_p" id="S4.SS1.SSS0.Px1.p1.1">We use LLaMA models by <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib1" title="">1</a>]</cite> to test the hypothesis. We use the LLaMA 7B model as our small model and the LLaMA 13B model as our large model.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_paragraph" id="S4.SS1.SSS0.Px2">
+<h4 class="ltx_title ltx_title_paragraph">Data</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS1.SSS0.Px2.p1">
+<p class="ltx_p" id="S4.SS1.SSS0.Px2.p1.1">We use TriviaQA: A Large Scale Dataset for Reading Comprehension and Question Answering <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib6" title="">6</a>]</cite> as our source of question and answer data. We split the data 80/20 between the training set and the testing set.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_paragraph" id="S4.SS1.SSS0.Px3">
+<h4 class="ltx_title ltx_title_paragraph">Fine-tuning</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS1.SSS0.Px3.p1">
+<p class="ltx_p" id="S4.SS1.SSS0.Px3.p1.1">We use parameter-efficient fine-tuning &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib17" title="">17</a>]</cite> to tune the model using fine-tuning code from Project Baize <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib3" title="">3</a>]</cite>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_paragraph" id="S4.SS1.SSS0.Px4">
+<h4 class="ltx_title ltx_title_paragraph">Evaluation</h4><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS1.SSS0.Px4.p1">
+<p class="ltx_p" id="S4.SS1.SSS0.Px4.p1.1">We evaluate the model by making the fine-tuned small models generate responses to the unseen test split of the data.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS2.5.1.1">IV-B</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS2.6.2">Results</span>
+</h3><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS2.p1">
+<p class="ltx_p" id="S4.SS2.p1.1">After evaluating the fine-tuned models on the unseen test set, we found that the small model fine-tuned on the data generated by the large model produces more wrong answers than the small model fine-tuned on data generated by the small model - an average of 125% and median of 107% increase in wrong answers.
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S4.SS2.p2">
+<p class="ltx_p" id="S4.SS2.p2.1">The difference between the two models can be seen in Table&nbsp;<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.T1" title="TABLE I ‣ IV-B Results ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_tag">I</span></a>. For example in the 5th row of the table, the small model (7B) fine-tuned on data generated by the small model, generates 426 wrong answers. The same model, when fine-tuned on data generated by the large model (13B), generates 1134 wrong answers (as shown in the 10th row). This confirms the hypothesis. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S4.SS2.p3">
+<p class="ltx_p" id="S4.SS2.p3.1">Table&nbsp;<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.T2" title="TABLE II ‣ IV-B Results ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_tag">II</span></a> shows the increase in the number of wrong responses between the two models. Row 5 of the table, for example, shows that there is an increase of <math alttext="166.2\%" class="ltx_Math" display="inline" id="S4.SS2.p3.1.m1.1"><semantics id="S4.SS2.p3.1.m1.1a"><mrow id="S4.SS2.p3.1.m1.1.1" xref="S4.SS2.p3.1.m1.1.1.cmml"><mn id="S4.SS2.p3.1.m1.1.1.2" xref="S4.SS2.p3.1.m1.1.1.2.cmml">166.2</mn><mo id="S4.SS2.p3.1.m1.1.1.1" xref="S4.SS2.p3.1.m1.1.1.1.cmml">%</mo></mrow><annotation-xml encoding="MathML-Content" id="S4.SS2.p3.1.m1.1b"><apply id="S4.SS2.p3.1.m1.1.1.cmml" xref="S4.SS2.p3.1.m1.1.1"><csymbol cd="latexml" id="S4.SS2.p3.1.m1.1.1.1.cmml" xref="S4.SS2.p3.1.m1.1.1.1">percent</csymbol><cn id="S4.SS2.p3.1.m1.1.1.2.cmml" type="float" xref="S4.SS2.p3.1.m1.1.1.2">166.2</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p3.1.m1.1c">166.2\%</annotation><annotation encoding="application/x-llamapun" id="S4.SS2.p3.1.m1.1d">166.2 %</annotation></semantics></math> in wrong response in the ”7B model fine-tuned on 13B” compared to the ”7B model fine-tuned on 7B”.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<figure class="ltx_table" id="S4.T1">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table">TABLE I: </span>Evaluation of Fine-tuned Models on Unseen Test Set</figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle" id="S4.T1.1">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S4.T1.1.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.1.1.1.1">Model and Finetune</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.1.1.1.2">Epochs</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.1.1.1.3">Wrong</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.1.1.1.4">Correct</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.1.1.1.5">IDK</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S4.T1.1.2.1">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.1.2.1.1">7B Finetuned on 7B</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T1.1.2.1.2">1</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T1.1.2.1.3">675</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T1.1.2.1.4">7205</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T1.1.2.1.5">9644</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.3.2">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.3.2.1">7B Fine-tuned on 7B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.3.2.2">2</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.3.2.3">1072</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.3.2.4">7019</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.3.2.5">9433</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.4.3">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.4.3.1">7B Fine-tuned on 7B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.4.3.2">3</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.4.3.3">704</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.4.3.4">7362</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.4.3.5">9458</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.5.4">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.5.4.1">7B Fine-tuned on 7B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.5.4.2">4</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.5.4.3">643</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.5.4.4">7016</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.5.4.5">9865</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.6.5">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.6.5.1">7B Fine-tuned on 7B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.6.5.2">5</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.6.5.3">426</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.6.5.4">6614</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.6.5.5">10484</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.7.6">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.7.6.1">7B Fine-tuned on 13B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.7.6.2">1</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.7.6.3">1168</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.7.6.4">8390</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.7.6.5">7966</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.8.7">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.8.7.1">7B Fine-tuned on 13B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.8.7.2">2</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.8.7.3">1546</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.8.7.4">7904</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.8.7.5">8074</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.9.8">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.9.8.1">7B Fine-tuned on 13B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.9.8.2">3</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.9.8.3">1459</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.9.8.4">7495</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.9.8.5">8570</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.10.9">
+<td class="ltx_td ltx_align_left" id="S4.T1.1.10.9.1">7B Fine-tuned on 13B</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.10.9.2">4</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.10.9.3">2150</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.10.9.4">7887</td>
+<td class="ltx_td ltx_align_right" id="S4.T1.1.10.9.5">7487</td>
+</tr>
+<tr class="ltx_tr" id="S4.T1.1.11.10">
+<td class="ltx_td ltx_align_left ltx_border_bb" id="S4.T1.1.11.10.1">7B Fine-tuned on 13B</td>
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S4.T1.1.11.10.2">5</td>
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S4.T1.1.11.10.3">1134</td>
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S4.T1.1.11.10.4">7475</td>
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S4.T1.1.11.10.5">8915</td>
+</tr>
+</tbody>
+</table>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<figure class="ltx_table" id="S4.T2">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table">TABLE II: </span>Change in responses between fine-tunes of 7B and 13B data </figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle" id="S4.T2.1">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S4.T2.1.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="S4.T2.1.1.1.1">Epochs</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T2.1.1.1.2">
+<table class="ltx_tabular ltx_align_middle" id="S4.T2.1.1.1.2.1">
+<tbody><tr class="ltx_tr" id="S4.T2.1.1.1.2.1.1">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.2.1.1.1">% increase in</td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.1.1.2.1.2">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.2.1.2.1">wrong responses</td>
+</tr>
+</tbody></table>
+</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T2.1.1.1.3">
+<table class="ltx_tabular ltx_align_middle" id="S4.T2.1.1.1.3.1">
+<tbody><tr class="ltx_tr" id="S4.T2.1.1.1.3.1.1">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.3.1.1.1">% increase in correct</td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.1.1.3.1.2">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.3.1.2.1">responses</td>
+</tr>
+</tbody></table>
+</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T2.1.1.1.4">
+<table class="ltx_tabular ltx_align_middle" id="S4.T2.1.1.1.4.1">
+<tbody><tr class="ltx_tr" id="S4.T2.1.1.1.4.1.1">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.4.1.1.1">% decrease in</td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.1.1.4.1.2">
+<td class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T2.1.1.1.4.1.2.1">IDK responses</td>
+</tr>
+</tbody></table>
+</th>
+<td class="ltx_td ltx_border_tt" id="S4.T2.1.1.1.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.2.2">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_t" id="S4.T2.1.2.2.1">1</th>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T2.1.2.2.2">73.04</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T2.1.2.2.3">16.45</td>
+<td class="ltx_td ltx_align_right ltx_border_t" id="S4.T2.1.2.2.4">17.4</td>
+<td class="ltx_td ltx_border_t" id="S4.T2.1.2.2.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.3.3">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S4.T2.1.3.3.1">2</th>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.3.3.2">44.22</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.3.3.3">12.61</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.3.3.4">14.41</td>
+<td class="ltx_td" id="S4.T2.1.3.3.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.4.4">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S4.T2.1.4.4.1">3</th>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.4.4.2">107.24</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.4.4.3">1.81</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.4.4.4">9.39</td>
+<td class="ltx_td" id="S4.T2.1.4.4.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.5.5">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S4.T2.1.5.5.1">4</th>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.5.5.2">234.37</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.5.5.3">12.41</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.5.5.4">24.11</td>
+<td class="ltx_td" id="S4.T2.1.5.5.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.6.6">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S4.T2.1.6.6.1">5</th>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.6.6.2">166.2</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.6.6.3">13.02</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.6.6.4">14.97</td>
+<td class="ltx_td" id="S4.T2.1.6.6.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.7.7">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="S4.T2.1.7.7.1">Average</th>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.7.7.2">125.01</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.7.7.3">11.26</td>
+<td class="ltx_td ltx_align_right" id="S4.T2.1.7.7.4">16.05</td>
+<td class="ltx_td" id="S4.T2.1.7.7.5"></td>
+</tr>
+<tr class="ltx_tr" id="S4.T2.1.8.8">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb ltx_border_b" id="S4.T2.1.8.8.1">Median</th>
+<td class="ltx_td ltx_align_right ltx_border_bb ltx_border_b" id="S4.T2.1.8.8.2">107.24</td>
+<td class="ltx_td ltx_align_right ltx_border_bb ltx_border_b" id="S4.T2.1.8.8.3">12.61</td>
+<td class="ltx_td ltx_align_right ltx_border_bb ltx_border_b" id="S4.T2.1.8.8.4">14.97</td>
+<td class="ltx_td ltx_border_bb ltx_border_b" id="S4.T2.1.8.8.5"></td>
+</tr>
+</tbody>
+</table>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S4.SS2.p4">
+<p class="ltx_p" id="S4.SS2.p4.1">A comparison of the number of wrong answers in the two models is summarized in Figure <a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#S4.F1" title="Figure 1 ‣ IV-B Results ‣ IV Testing the Hypothesis ‣ Exploring the Knowledge Mismatch Hypothesis: Hallucination Propensity in Small Models Fine-tuned on Data from Larger Models"><span class="ltx_text ltx_ref_tag">1</span></a>.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<figure class="ltx_figure" id="S4.F1">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Comparison of Wrong Answers</figcaption><svg class="ltx_picture ltx_centering" height="332.58" id="S4.F1.pic1" overflow="visible" version="1.1" width="343.39"><g fill="#000000" stroke="#000000" stroke-width="0.4pt" transform="translate(0,332.58) matrix(1 0 0 -1 0 0) translate(62.82,0) translate(0,73.85) matrix(1.0 0.0 0.0 1.0 -62.82 -73.85)"><g class="ltx_nestedsvg" transform="matrix(1 0 0 1 0 0) translate(91.97,0) translate(0,103)"><g color="#808080" fill="#808080" stroke="#808080" stroke-width="0.2pt"><path d="M 0 -35.06 L 0 -29.16 M 48.6 -35.06 L 48.6 -29.16 M 97.19 -35.06 L 97.19 -29.16 M 145.79 -35.06 L 145.79 -29.16 M 194.38 -35.06 L 194.38 -29.16 M 0 229.44 L 0 223.54 M 48.6 229.44 L 48.6 223.54 M 97.19 229.44 L 97.19 223.54 M 145.79 229.44 L 145.79 223.54 M 194.38 229.44 L 194.38 223.54" style="fill:none"></path></g><g color="#808080" fill="#808080" stroke="#808080" stroke-width="0.2pt"><path d="M -29.16 8.34 L -23.25 8.34 M -29.16 64.72 L -23.25 64.72 M -29.16 121.09 L -23.25 121.09 M -29.16 177.47 L -23.25 177.47 M 223.54 8.34 L 217.63 8.34 M 223.54 64.72 L 217.63 64.72 M 223.54 121.09 L 217.63 121.09 M 223.54 177.47 L 217.63 177.47" style="fill:none"></path></g><g fill="#000000" stroke="#000000" stroke-width="0.4pt"><path d="M -29.16 -29.16 L -29.16 223.54 L 223.54 223.54 L 223.54 -29.16 L -29.16 -29.16 Z" style="fill:none"></path><g fill="#000000" stroke="#000000" transform="matrix(0.7071 0.7071 -0.7071 0.7071 -5.2 -46.56)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="6.92"><span class="ltx_text" id="S4.F1.pic1.15.15.15.15.15.1.1">1</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(0.7071 0.7071 -0.7071 0.7071 43.4 -46.56)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="6.92"><span class="ltx_text" id="S4.F1.pic1.16.16.16.16.16.1.1">2</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(0.7071 0.7071 -0.7071 0.7071 91.99 -46.56)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="6.92"><span class="ltx_text" id="S4.F1.pic1.17.17.17.17.17.1.1">3</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(0.7071 0.7071 -0.7071 0.7071 140.59 -46.56)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="6.92"><span class="ltx_text" id="S4.F1.pic1.18.18.18.18.18.1.1">4</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(0.7071 0.7071 -0.7071 0.7071 189.18 -46.56)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="6.92"><span class="ltx_text" id="S4.F1.pic1.19.19.19.19.19.1.1">5</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 -54.8 3.88)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="20.76"><math alttext="500" class="ltx_Math" display="inline" id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1a"><mn id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">500</mn><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1b"><cn id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1">500</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1c">500</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1d">500</annotation></semantics></math></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 -65.56 61.61)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}000" class="ltx_Math" display="inline" id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">000</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2">000</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2c">1{,}000</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2d">1 , 000</annotation></semantics></math></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 -65.56 117.98)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}500" class="ltx_Math" display="inline" id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">500</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2">500</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2c">1{,}500</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2d">1 , 500</annotation></semantics></math></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 -65.56 174.36)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="2{,}000" class="ltx_Math" display="inline" id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">2</mn><mo id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">000</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1">2</cn><cn id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2">000</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2c">2{,}000</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2d">2 , 000</annotation></semantics></math></foreignobject></g><clippath id="pgfcp1"><path d="M -29.16 -29.16 L 223.54 -29.16 L 223.54 223.54 L -29.16 223.54 Z"></path></clippath><g clip-path="url(#pgfcp1)"><g color="#0000FF" fill="#B3B3FF" stroke="#0000FF"><path d="M -6.23 -29.16 h 4.15 v 57.23 h -4.15 Z M 42.37 -29.16 h 4.15 v 101.99 h -4.15 Z M 90.96 -29.16 h 4.15 v 60.5 h -4.15 Z M 139.56 -29.16 h 4.15 v 53.62 h -4.15 Z M 188.15 -29.16 h 4.15 v 29.16 h -4.15 Z"></path></g><g></g><g color="#FF0000" fill="#FFB3B3" stroke="#FF0000"><path d="M 2.08 -29.16 h 4.15 v 112.82 h -4.15 Z M 50.67 -29.16 h 4.15 v 155.44 h -4.15 Z M 99.27 -29.16 h 4.15 v 145.63 h -4.15 Z M 147.86 -29.16 h 4.15 v 223.54 h -4.15 Z M 196.46 -29.16 h 4.15 v 108.98 h -4.15 Z"></path></g><g></g></g><g color="#0000FF" fill="#0000FF" stroke="#0000FF" transform="matrix(1.0 0.0 0.0 1.0 -14.53 32.96)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="20.76"><math alttext="675" class="ltx_Math" display="inline" id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1a"><mn id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">675</mn><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1b"><cn id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1">675</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1c">675</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1d">675</annotation></semantics></math></foreignobject></g><g color="#0000FF" fill="#0000FF" stroke="#0000FF" transform="matrix(1.0 0.0 0.0 1.0 28.69 80.42)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}072" class="ltx_Math" display="inline" id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">072</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2">072</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2c">1{,}072</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2d">1 , 072</annotation></semantics></math></foreignobject></g><g color="#0000FF" fill="#0000FF" stroke="#0000FF" transform="matrix(1.0 0.0 0.0 1.0 82.66 36.23)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="20.76"><math alttext="704" class="ltx_Math" display="inline" id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1a"><mn id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">704</mn><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1b"><cn id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1">704</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1c">704</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.7.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1d">704</annotation></semantics></math></foreignobject></g><g color="#0000FF" fill="#0000FF" stroke="#0000FF" transform="matrix(1.0 0.0 0.0 1.0 131.26 29.36)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="20.76"><math alttext="643" class="ltx_Math" display="inline" id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1a"><mn id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">643</mn><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1b"><cn id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1">643</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1c">643</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.8.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1d">643</annotation></semantics></math></foreignobject></g><g color="#0000FF" fill="#0000FF" stroke="#0000FF" transform="matrix(1.0 0.0 0.0 1.0 179.85 4.89)"><foreignobject height="8.92" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="20.76"><math alttext="426" class="ltx_Math" display="inline" id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1a"><mn id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">426</mn><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1b"><cn id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1">426</cn></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1c">426</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.9.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1d">426</annotation></semantics></math></foreignobject></g><g color="#FF0000" fill="#FF0000" stroke="#FF0000" transform="matrix(1.0 0.0 0.0 1.0 -11.61 91.24)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}168" class="ltx_Math" display="inline" id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">168</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2.2">168</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2c">1{,}168</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.10.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.m1.2d">1 , 168</annotation></semantics></math></foreignobject></g><g color="#FF0000" fill="#FF0000" stroke="#FF0000" transform="matrix(1.0 0.0 0.0 1.0 36.99 133.86)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}546" class="ltx_Math" display="inline" id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">546</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2.2">546</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2c">1{,}546</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.11.2.2.2.2.2.2.2.1.1.1.1.1.1.1.1.1.m1.2d">1 , 546</annotation></semantics></math></foreignobject></g><g color="#FF0000" fill="#FF0000" stroke="#FF0000" transform="matrix(1.0 0.0 0.0 1.0 85.58 124.05)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}459" class="ltx_Math" display="inline" id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">459</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2.2">459</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2c">1{,}459</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.12.3.3.3.3.3.3.3.1.1.1.1.1.1.1.1.1.m1.2d">1 , 459</annotation></semantics></math></foreignobject></g><g color="#FF0000" fill="#FF0000" stroke="#FF0000" transform="matrix(1.0 0.0 0.0 1.0 134.18 201.96)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="2{,}150" class="ltx_Math" display="inline" id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">2</mn><mo id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">150</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.1.1">2</cn><cn id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2.2">150</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2c">2{,}150</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.13.4.4.4.4.4.4.4.1.1.1.1.1.1.1.1.1.m1.2d">2 , 150</annotation></semantics></math></foreignobject></g><g color="#FF0000" fill="#FF0000" stroke="#FF0000" transform="matrix(1.0 0.0 0.0 1.0 182.77 87.41)"><foreignobject height="11.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="31.52"><math alttext="1{,}134" class="ltx_Math" display="inline" id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2"><semantics id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2a"><mrow id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.2" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml"><mn id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">1</mn><mo id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.2.1" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml">,</mo><mn id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.2" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.2.cmml">134</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2b"><list id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.1.cmml" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.3.2"><cn id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" type="integer" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.1.1">1</cn><cn id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.2.cmml" type="integer" xref="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2.2">134</cn></list></annotation-xml><annotation encoding="application/x-tex" id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2c">1{,}134</annotation><annotation encoding="application/x-llamapun" id="S4.F1.pic1.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.14.5.5.5.5.5.5.5.1.1.1.1.1.1.1.1.1.m1.2d">1 , 134</annotation></semantics></math></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 75.34 -67.58)"><foreignobject height="12.3" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="43.7"><span class="ltx_text" id="S4.F1.pic1.20.20.20.20.20.1.1">Epochs</span></foreignobject></g><g fill="#000000" stroke="#000000" transform="matrix(0.0 1.0 -1.0 0.0 -77.75 35.58)"><foreignobject height="12.3" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="124.38"><span class="ltx_text" id="S4.F1.pic1.21.21.21.21.21.1.1"># of Wrong answers</span></foreignobject></g><g fill="#FFFFFF" stroke="#000000"><path d="M -56.76 -102.73 h 307.9 v 22.75 h -307.9 Z"></path></g><g fill="#FFFFFF" stroke="#000000" transform="matrix(1.0 0.0 0.0 1.0 -52.61 -99.96)"><g class="ltx_tikzmatrix" transform="matrix(1 0 0 -1 0 8.61)"><g class="ltx_tikzmatrix_row" transform="matrix(1 0 0 1 0 8.61)"><g class="ltx_tikzmatrix_col ltx_nopad_l ltx_nopad_r" color="#0000FF" fill="#B3B3FF" stroke="#0000FF" transform="matrix(1 0 0 -1 0 0) translate(2.35,0)"><path d="M -2.08 -2.77 h 4.15 v 11.07 h -4.15 Z M 6.23 -2.77 h 4.15 v 8.3 h -4.15 Z"></path></g><g class="ltx_tikzmatrix_col ltx_nopad_l ltx_nopad_r" fill="#000000" stroke="#000000" transform="matrix(1 0 0 -1 13.01 0) translate(66.67,0) matrix(1.0 0.0 0.0 1.0 -63.9 -3.77)"><foreignobject height="9.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="127.8"><span class="ltx_text" id="S4.F1.pic1.22.22.22.22.22.1.1.1.1.1">7B Fine-tuned on 7B</span></foreignobject></g><g class="ltx_tikzmatrix_col ltx_nopad_l ltx_nopad_r" color="#FF0000" fill="#FFB3B3" stroke="#FF0000" transform="matrix(1 0 0 -1 146.34 0) translate(2.35,0)"><path d="M -2.08 -2.77 h 4.15 v 11.07 h -4.15 Z M 6.23 -2.77 h 4.15 v 8.3 h -4.15 Z"></path></g><g class="ltx_tikzmatrix_col ltx_nopad_l ltx_nopad_r" fill="#000000" stroke="#000000" transform="matrix(1 0 0 -1 159.35 0) translate(70.13,0) matrix(1.0 0.0 0.0 1.0 -67.36 -3.77)"><foreignobject height="9.61" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="134.72"><span class="ltx_text" id="S4.F1.pic1.23.23.23.23.23.2.2.2.1.1">7B Fine-tuned on 13B</span></foreignobject></g></g></g></g></g></g></g></svg><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</figure><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</section>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">V </span><span class="ltx_text ltx_font_smallcaps" id="S5.1.1">The Effects of Fine-tuning on Data Obtained from a Larger Model</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">Our results show that a small model fine-tuned on data generated by a larger model provides significantly more wrong answers compared to small models fine-tuned on data generated by the small model. This suggests that fine-tuning on data generated by large models may have the unintended consequence of increasing the hallucination through an increase in factually incorrect responses in questioning and answering settings. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S5.p2">
+<p class="ltx_p" id="S5.p2.1">We also observe that there are fewer ”I don’t know” responses in the responses of the model fine-tuned on data generated by a larger model compared to that of the model fine-tuned on data generated by the smaller model. We believe that this is most likely due to the fact that the fine-tuning dataset created by the base 13B model has fewer ”I don’t know” responses compared to the one generated by the base 7B model because the base 13B model performs better than the base 7B model and thus had fewer wrong answers that were mapped to ”I don’t know”. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S5.p3">
+<p class="ltx_p" id="S5.p3.1">In addition, we find that there are more correct answers in the model fine-tuned with the data generated by that larger model than that of the small model. This is in line with the evaluations of many of the small-scale larger model data fine-tune models released recently. This is likely due to the fact that despite causing some knowledge mismatch, fine-tuning still contributes to improved model performance.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">VI </span><span class="ltx_text ltx_font_smallcaps" id="S6.1.1">Limitations</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">Knowledge mismatch through model fine-tuning is only one of many potential reasons for large language model hallucination. As such, there may be other factors that may also contribute to model hallucination that our analysis does not discuss. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S6.p2">
+<p class="ltx_p" id="S6.p2.1">Given the resources available, we only tested the hypothesis on the 7B and 13B variants of the LLaMA model. While we believe that our hypothesis should likely still hold for other model combinations, we were not able to test this because of resource constraints. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S6.p3">
+<p class="ltx_p" id="S6.p3.1">It is also worth noting that while the TriviaQA dataset is a relatively large and widely used question and answering dataset, is not fully processed and cleaned. In particular, a few answers in the dataset are not correct, and some answers do not list all possible answers and answer formats. As such this may contribute to a few incorrect evaluations where the model was correct but the expected answer was incorrect.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S7">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">VII </span><span class="ltx_text ltx_font_smallcaps" id="S7.1.1">Related Work</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S7.p1">
+<p class="ltx_p" id="S7.p1.1">Most model evaluations, including many fine-tuned models trained using data from larger models generally report their hallucination as a key limitation and highlight the importance of using quality data in model tuning to achieve better performance. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p2">
+<p class="ltx_p" id="S7.p2.1">Most top AI research organizations also generally report model hallucination and the techniques that they use to lower and limit hallucination. Currently, there exist many attempts to create, leverage and analyze strategies to reduce hallucination, such as RLHF and RLAIF. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p3">
+<p class="ltx_p" id="S7.p3.1">For instance, &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib14" title="">14</a>]</cite> observe that making language models bigger does not inherently make them better at following a user’s intent, as large language models can still generate outputs that are untruthful, toxic, or simply not helpful to the user. They note that large language models are not necessarily aligned with their users and propose RLHF, also known as Reinforcement Learning with Human Feedback, which finetunes models with human feedback to address the issue. They observe that in human evaluations outputs from a smaller model (InstructGPT 1.3B) that leverages RLHF are preferred to outputs from a model 100x the size (GPT3). They also find that InstructGPT models show improvements in truthfulness and reductions in toxic output generation while having minimal performance regressions on public NLP datasets, which suggests that RLHF can contribute to reducing hallucination. &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib15" title="">15</a>]</cite> and &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib20" title="">20</a>]</cite> apply a similar strategy and also find less hallucination and more helpful, safe, and aligned models. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p4">
+<p class="ltx_p" id="S7.p4.1">Another common technique to lessen hallucination and create more aligned models is RLAIF or Reinforcement Learning with Artificial Intelligence Feedback. &nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib13" title="">13</a>]</cite> implement this strategy through Constitutional AI, for which the only human oversight provided is a list of rules or principles, and the AI model is used to train itself through supervised training and reinforcement learning (RL). In the supervised phase, self-critiques and revisions are generated from the model, which are then revised and used to fine-tune the original model. In the RL phase, samples are generated from the finetuned model, which is fed to a model to evaluate which of the two samples is better, and then used to train a preference model from this dataset of AI preferences. They then engage in RLAIF by training with RL using the preference model as the reward signal. They find that doing this reduces harmfulness similar to human feedback. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p5">
+<p class="ltx_p" id="S7.p5.1">There has also been some work in studying the effects of novel training and training data generation through techniques such as Contrastive Learning and Evol-Instruct. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p6">
+<p class="ltx_p" id="S7.p6.1"><cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib4" title="">4</a>]</cite> study the use of contrastive learning as a potential way to address hallucination. In particular, they propose Mixed Contrastive Learning (MixCL) to alleviate the hallucinations of LM-based dialogue agents. This technique explicitly samples the most confusing knowledge to the model and reduces its generation probability by contrasting it with the ground truth. They find that this technique significantly improves dialogue performance and lessens the hallucination of LMs, based on ablation studies and human evaluation. 
+<br class="ltx_break"></p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+<div class="ltx_para" id="S7.p7">
+<p class="ltx_p" id="S7.p7.1"><cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2411.00878v1#bib.bib21" title="">21</a>]</cite> focus on creating better data for model fine-tuning. In particular, they propose Evol-Instruct as a technique to generate high-quality data for fine-tuning that can lead to more helpful models. They note that manually creating instruction data is not only time-consuming and labor-intensive but also difficult, as humans may struggle to produce high-complexity instructions. In their study, they propose a method to create instruction data with varying levels of complexity using LLMs instead of humans. Using an initial set of instructions, they use Evol-Instruct to rewrite them step by step into more complex instructions, then mix the generated instruction data to fine-tune a foundational model. They find that the resulting fine-tuned model is superior to top fine-tuned models of a similar size, including the Vicuna, which is fine-tuned on ShareGPT data. They also find that the fine-tuned model is even preferred over ChatGPT (a significantly larger proprietary model) in high-complexity tasks. This technique of Evol-Instruct can be said to be in line with the proposed hypothesis as it leverages the outputs generated by the same model for fine-tuning, which means that there should be significantly less knowledge mismatch in the fine-tuning, which may have contributed it its superior performance.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S8">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">VIII </span><span class="ltx_text ltx_font_smallcaps" id="S8.1.1">Conclusions</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S8.p1">
+<p class="ltx_p" id="S8.p1.1">We have explored the hypothesis that a mismatch between the knowledge that is fed to the model to fine-tune it and existing knowledge in a graph can contribute to the propensity of a model to hallucinate. Through experiments on fine-tuning models on data generated from other models, we find that models fine-tuned on data generated by larger models produce more wrong answers on questions that it has not seen before. Studying potential causes of hallucination will hopefully inspire further work on better techniques to create more helpful, truthful, and harmless models.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_section" id="S9">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">IX </span><span class="ltx_text ltx_font_smallcaps" id="S9.1.1">Acknowledgments</span>
+</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<div class="ltx_para" id="S9.p1">
+<p class="ltx_p" id="S9.p1.1">This research has been partly supported by the Center for Artificial Intelligence and Robotics (CAIR) and Center for Cyber Security (CCS) at New York University Abu Dhabi. The research was carried out on the High-Performance Computing resources at New York University Abu Dhabi.</p><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2><button class="sr-only button" style="display: none;">Report issue for preceding element</button>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_tag_bibitem">[1]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> H. Touvron, T. Lavril, G. Izacard, X. Martinet, M.-A. Lachaux, T. Lacroix, B. Rozière, N. Goyal, E. Hambro, F. Azhar, A. Rodriguez, A. Joulin, E. Grave, and G. Lample, “LLaMA: Open and Efficient Foundation Language Models,” arXiv:2302.13971, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_tag_bibitem">[2]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, “LoRA: Low-Rank Adaptation of Large Language Models,” arXiv:2106.09685, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_tag_bibitem">[3]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> C. Xu, D. Guo, N. Duan, and J. McAuley, “Baize: An Open-Source Chat Model with Parameter-Efficient Tuning on Self-Chat Data,” arXiv:2304.01196, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_tag_bibitem">[4]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> W. Sun, Z. Shi, S. Gao, P. Ren, M. de Rijke, and Z. Ren, “Contrastive Learning Reduces Hallucination in Conversations,” arXiv:2212.10400, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_tag_bibitem">[5]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> Y. Bang, S. Cahyawijaya, N. Lee, W. Dai, D. Su, B. Wilie, H. Lovenia, Z. Ji, T. Yu, W. Chung, Q. V. Do, Y. Xu, and P. Fung, “A Multitask, Multilingual, Multimodal Evaluation of ChatGPT on Reasoning, Hallucination, and Interactivity,” arXiv:2302.04023, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_tag_bibitem">[6]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> M. Joshi, E. Choi, D. Weld, and L. Zettlemoyer, “TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension,” in Proc. 55th Annu. Meeting of the Assoc. for Comput. Linguistics, pp. 1601–1611, July 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_tag_bibitem">[7]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> M. Conover, M. Hayes, A. Mathur, X. Meng, J. Xie, J. Wan, A. Ghodsi, P. Wendell, and M. Zaharia, “Hello Dolly: Democratizing the Magic of ChatGPT with Open Models,” Databricks Blog, 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://www.databricks.com/blog/2023/03/24/hello-dolly-democratizing-magic-chatgpt-open-models.html" title="">https://www.databricks.com/blog/2023/03/24/hello-dolly-democratizing-magic-chatgpt-open-models.html</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_tag_bibitem">[8]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> E. Wang, “Alpaca-LoRA,” GitHub repository, 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/tloen/alpaca-lora" title="">https://github.com/tloen/alpaca-lora</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_tag_bibitem">[9]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> Y. Anand, Z. Nussbaum, B. Duderstadt, B. Schmidt, and A. Mulyar, “GPT4All: Training an Assistant-Style Chatbot with Large Scale Data Distillation from GPT-3.5-Turbo,” GitHub repository, 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/nomic-ai/gpt4all" title="">https://github.com/nomic-ai/gpt4all</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_tag_bibitem">[10]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> R. Taori, I. Gulrajani, T. Zhang, Y. Dubois, X. Li, C. Guestrin, P. Liang, and T. B. Hashimoto, “Stanford Alpaca: An Instruction-Following LLaMA Model,” GitHub repository, 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/tatsu-lab/stanford_alpaca" title="">https://github.com/tatsu-lab/stanford_alpaca</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_tag_bibitem">[11]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> W.-L. Chiang, Z. Li, Z. Lin, Y. Sheng, Z. Wu, H. Zhang, L. Zheng, S. Zhuang, Y. Zhuang, J. E. Gonzalez, I. Stoica, and E. P. Xing, “Vicuna: An Open-Source Chatbot Impressing GPT-4 with 90% ChatGPT Quality,” 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://vicuna.lmsys.org/" title="">https://vicuna.lmsys.org/</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_tag_bibitem">[12]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> X. Geng, A. Gudibande, H. Liu, E. Wallace, P. Abbeel, S. Levine, and D. Song, “Koala: A Dialogue Model for Academic Research,” Blog post, Apr. 2023. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://bair.berkeley.edu/blog/2023/04/03/koala/" title="">https://bair.berkeley.edu/blog/2023/04/03/koala/</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib13">
+<span class="ltx_tag ltx_tag_bibitem">[13]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> Y. Bai, S. Kadavath, S. Kundu, A. Askell, J. Kernion, A. Jones, A. Chen, A. Goldie, A. Mirhoseini, C. McKinnon, C. Chen, C. Olsson, C. Olah, D. Drain, D. Hernandez, D. Li, E. Tran-Johnson, E. Perez, J. Kerr, J. Mueller, J. Ladish, K. Ndousse, K. Lukosuite, L. Lovitt, M. Sellitto, N. Elhage, N. Schiefer, N. Mercado, N. DasSarma, R. Larson, S. Ringer, S. Johnston, S. Kravec, S. Fort, T. Lanham, T. Telleen-Lawton, T. Conerly, T. Henighan, T. Hume, S. R. Bowman, Z. Hatfield-Dodds, B. Mann, D. Amodei, N. Joseph, and S. McCandlish, “Constitutional AI: Harmlessness from AI Feedback,” arXiv:2212.08073, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib14">
+<span class="ltx_tag ltx_tag_bibitem">[14]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> L. Ouyang, J. Wu, X. Jiang, D. Almeida, C. L. Wainwright, P. Mishkin, C. Zhang, S. Agarwal, K. Slama, A. Ray, J. Schulman, J. Hilton, F. Kelton, L. Miller, M. Simens, A. Askell, P. Welinder, P. Christiano, J. Leike, and R. Lowe, “Training Language Models to Follow Instructions with Human Feedback,” arXiv:2203.02155, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib15">
+<span class="ltx_tag ltx_tag_bibitem">[15]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> Y. Bai, A. Jones, K. Ndousse, A. Askell, A. Chen, N. DasSarma, D. Drain, S. Fort, N. Joseph, S. Kadavath, J. Kernion, T. Henighan, T. Hume, Z. Hatfield-Dodds, D. Hernandez, S. Johnston, S. Kravec, L. Lovitt, N. Nanda, C. Olsson, D. Amodei, T. Brown, J. Clark, S. McCandlish, C. Olah, B. Mann, and J. Kaplan, “Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback,” arXiv:2204.05862, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib16">
+<span class="ltx_tag ltx_tag_bibitem">[16]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> N. Dziri, S. Milton, M. Yu, O. Zaiane, and S. Reddy, “On the Origin of Hallucinations in Conversational Models: Is it the Datasets or the Models?,” arXiv:2204.07931, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib17">
+<span class="ltx_tag ltx_tag_bibitem">[17]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> S. Mangrulkar, S. Gugger, L. Debut, Y. Belkada, and S. Paul, “PEFT: State-of-the-art Parameter-Efficient Fine-Tuning Methods,” GitHub repository, 2022. [Online]. Available: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/huggingface/peft" title="">https://github.com/huggingface/peft</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib18">
+<span class="ltx_tag ltx_tag_bibitem">[18]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> Z. Ji, N. Lee, R. Frieske, T. Yu, D. Su, Y. Xu, E. Ishii, Y. J. Bang, A. Madotto, and P. Fung, “Survey of Hallucination in Natural Language Generation,” ACM Comput. Surveys, vol. 55, no. 12, pp. 1–38, Mar. 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib19">
+<span class="ltx_tag ltx_tag_bibitem">[19]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> N. Dziri, H. Rashkin, T. Linzen, and D. Reitter, “Evaluating Attribution in Dialogue Systems: The BEGIN Benchmark,” arXiv:2105.00071, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib20">
+<span class="ltx_tag ltx_tag_bibitem">[20]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> R. Thoppilan, D. De Freitas, J. Hall, N. Shazeer, A. Kulshreshtha, H.-T. Cheng, A. Jin, T. Bos, L. Baker, Y. Du, Y. Li, H. Lee, H. S. Zheng, A. Ghafouri, M. Menegali, Y. Huang, M. Krikun, D. Lepikhin, J. Qin, D. Chen, Y. Xu, Z. Chen, A. Roberts, M. Bosma, V. Zhao, Y. Zhou, C.-C. Chang, I. Krivokon, W. Rusch, M. Pickett, P. Srinivasan, L. Man, K. Meier-Hellstern, M. Ringel Morris, T. Doshi, R. Delos Santos, T. Duke, J. Soraker, B. Zevenbergen, V. Prabhakaran, M. Diaz, B. Hutchinson, K. Olson, A. Molina, E. Hoffman-John, J. Lee, L. Aroyo, R. Rajakumar, A. Butryna, M. Lamm, V. Kuzmina, J. Fenton, A. Cohen, R. Bernstein, R. Kurzweil, B. Aguera-Arcas, C. Cui, M. Croak, E. Chi, Q. Le, ”LaMDA: Language Models for Dialog Applications,” arXiv preprint arXiv:2201.08239, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib21">
+<span class="ltx_tag ltx_tag_bibitem">[21]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> C. Xu, Q. Sun, K. Zheng, X. Geng, P. Zhao, J. Feng, C. Tao, D. Jiang, ”WizardLM: Empowering Large Language Models to Follow Complex Instructions,” arXiv preprint arXiv:2304.12244, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib22">
+<span class="ltx_tag ltx_tag_bibitem">[22]<button class="back-to-reference-btn" aria-label="Back to the article">↑</button></span>
+<span class="ltx_bibblock"> K. Lee, D. Ippolito, A. Nystrom, C. Zhang, D. Eck, C. Callison-Burch, N. Carlini, ”Deduplicating Training Data Makes Language Models Better,” arXiv preprint arXiv:2107.06499, 2022.
+
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</article>
+</div>
+
+</div>
+
+
+<button type="button" class="btn btn-primary hover-rp-button" id="openForm">Report Issue</button><div class="modal" id="myForm" role="dialog" aria-labelledby="modal-title"><div class="modal-dialog"><form class="modal-content" id="myFormContent" enctype="multipart/form-data"><div class="modal-header" id="modal-header"><h5 class="modal-title">Report Github Issue</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><label for="form_title" id="modalTitle">Title:</label><input class="form-control" id="form_title" name="form_title" required="required" placeholder="Enter title"><label for="description" id="selectedTextModalDescription" style="display: none;">Content selection saved. Describe the issue below:</label><label for="description" id="nomralModalDescription">Description:</label><textarea class="form-control" id="description" name="description" required="required" style="height: 80px;" maxlength="500" placeholder="500 characters maximum"></textarea></div><div class="modal-footer d-flex justify-content-end"><button type="submit" class="sr-only button" id="modal-submit-sr">Submit without Github</button><button type="submit" class="btn btn-primary" id="modal-submit">Submit in Github</button></div></form></div></div><button id="small-report-button" type="button" class="btn btn-secondary btn-sm" style="background-color: rgb(179, 27, 27); position: fixed; display: none;">Report Issue for Selection</button><div class="ltx_page_footer">
+        <div class="ltx_page_logo">
+            Generated by
+            <a href="https://math.nist.gov/~BMiller/LaTeXML/" class="ltx_LaTeXML_logo">
+                <span style="letter-spacing: -0.2em; margin-right: 0.1em;">
+                    L
+                    <span style="font-size: 70%; position: relative; bottom: 2.2pt;">A</span>
+                    T
+                    <span style="position: relative; bottom: -0.4ex;">E</span>
+                </span>
+                <span class="ltx_font_smallcaps">xml</span>
+                <img alt="[LOGO]" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==">
+            </a>
+        </div></div><footer id="footer" class="ltx_document">
+        <div class="keyboard-glossary">
+            <h2>Instructions for reporting errors</h2>
+            <p>We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the methods listed below:</p>
+            <ul>
+                <li>Click the "Report Issue" button.</li>
+                <li>Open a report feedback form via keyboard, use "<strong>Ctrl + ?</strong>".</li>
+                <li>Make a text selection and click the "Report Issue for Selection" button near your cursor.</li>
+                <li class="sr-only">You can use Alt+Y to toggle on and Alt+Shift+Y to toggle off accessible reporting links at each section.</li>
+            </ul>
+            <p>Our team has already identified <a class="ltx_ref" href="https://github.com/arXiv/html_feedback/issues" target="_blank">the following issues</a>. We appreciate your time reviewing and reporting rendering errors we may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability should not be a barrier to accessing research. Thank you for your continued support in championing open access for all.</p>
+            <p>Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a <a class="ltx_ref" href="https://github.com/brucemiller/LaTeXML/wiki/Porting-LaTeX-packages-for-LaTeXML" target="_blank">list of packages that need conversion</a>, and welcome <a class="ltx_ref" href="https://github.com/brucemiller/LaTeXML/issues" target="_blank">developer contributions</a>.</p>
+        </div>
+    </footer></body></html>
